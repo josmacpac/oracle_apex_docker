@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "--- INICIANDO INSTALACIÓN AUTOMÁTICA DE APEX ---"
+
+
+echo "--- INSTALACIÓN DE APEX FINALIZADA --"
