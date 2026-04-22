@@ -1,0 +1,11 @@
+# Datos de Oracle (No subir nunca)
+oradata/
+
+# Instalador de APEX (Muy pesado)
+apex_software/
+*.zip
+*.tar.gz
+
+# Logs y archivos temporales
+*.log
+.DS_Store
