@@ -1,7 +1,4 @@
-## Docker compose para instalacion de Oraclec-Apex-Ords
-
-version: '3.8'
-
+## Docker compose para instalacion de Oraclec-Apex-Ords## Docker compose para instalacion de Oraclec-Apex-Ords
 services:
   # --- CONTENEDOR DE LA BASE DE DATOS ORACLE ---
   oracle-db:
@@ -9,19 +6,22 @@ services:
     container_name: oracle19c-apex
     restart: always
     environment:
-      - ORACLE_PWD=TuPasswordSeguro123  # <--- Cambia esto por uno propio
+      - ORACLE_PWD=Password123$
       - TZ=America/Mexico_City
+      - ORACLE_EDITION=enterprise
+      - ORACLE_SID=ORCLCDB
+      - ORACLE_PDB=ORCLPDB1
     ports:
       - "32122:1521"
     volumes:
-      - ./oradata:/opt/oracle/oradata # Persistencia de datos (Mapeado a la carpeta que creamos)
-      - ./apex/20.1:/home/oracle/apex_install # Instalador de APEX (Mapeado para que sea visible dentro de Oracle)
-      - ./scripts:/opt/oracle/scripts/setup
+      - ./oradata:/opt/oracle/oradata # Persistencia de datos 
+      - ./apex/apex:/home/oracle/apex_install # Instalador de APEX 
+      - ./scripts:/home/oracle/scripts
     shm_size: '2gb'       # Crucial para evitar errores de memoria en Oracle
     deploy:
       resources:
         limits:
-          memory: 6G      # RAM máxima recomendada
+          memory: 5G      # RAM máxima recomendada
           cpus: '2.0'
     networks:
       - oracle_network
@@ -31,8 +31,10 @@ services:
     image: josmacpac/ords-apex:20.4  # <--- Tu imagen ya registrada
     container_name: ords-server
     restart: always
+    stdin_open: true 
+    tty: true
     depends_on:
-      - oracle19c-apex
+      - oracle-db
     ports:
       - "8080:8080"       # Puerto para entrar a APEX desde el navegador
     environment:
@@ -43,5 +45,6 @@ services:
       - oracle_network
 
 networks:
-  oracle_apex_net:
+  oracle_network:
     driver: bridge
+
