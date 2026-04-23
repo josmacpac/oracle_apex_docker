@@ -28,7 +28,8 @@ services:
 
   # --- CONTENEDOR DE ORDS (APEX WEB) ---
   ords-server:
-    image: josmacpac/ords-apex:20.4  # <--- Tu imagen ya registrada
+    build:
+      context: ./ords          # Carpeta donde está tu Dockerfile de ORDS
     container_name: ords-server
     restart: always
     stdin_open: true 
@@ -36,15 +37,24 @@ services:
     depends_on:
       - oracle-db
     ports:
-      - "8080:8080"       # Puerto para entrar a APEX desde el navegador
+      - "8080:8080"
     environment:
       - ORACLE_HOST=oracle19c-apex
       - ORACLE_PORT=1521
-      - ORACLE_SERVICE=ORCLCDB
+      # CAMBIO IMPORTANTE: Apuntar a la PDB para que ORDS encuentre APEX
+      - ORACLE_SERVICE=ORCLPDB1  
+      - ORACLE_PWD=Password123$
+      - APEX_PUBLIC_USER_PASSWORD=Password123$
+      - APEX_LISTENER_PASSWORD=Password123$
+      - APEX_REST_PASSWORD=Password123$
+    volumes:
+      # Mapeo para las imágenes de APEX 20.1
+      - ./apex/apex/images:/ords/apex-images
+      # Persistencia de la configuración nueva
+      - ./ords_config:/opt/ords 
     networks:
       - oracle_network
 
 networks:
   oracle_network:
     driver: bridge
-
