@@ -40,15 +40,13 @@ services:
       - "8080:8080"
     environment: 
       - TZ=America/Mexico_City
-      - ORACLE_HOST=oracle19c-apex
-      - ORACLE_PORT=1521
-      # CAMBIO IMPORTANTE: Apuntar a la PDB para que ORDS encuentre APEX
-      - ORACLE_SERVICE=ORCLPDB1
+      - DB_HOSTNAME=oracle19c-apex
+      - DB_PORT=1521
+      - DB_SERVICENAME=ORCLPDB1
       - SYS_PASS=Password123$  
-      - ORACLE_PWD=Password123$
-      - APEX_PUBLIC_USER_PASSWORD=Password123$
-      - APEX_LISTENER_PASSWORD=Password123$
-      - APEX_REST_PASSWORD=Password123$
+      - APEX_PUBLIC_USER_PASS=Password123$
+      - APEX_LISTENER_PASS=Password123$
+      - APEX_REST_PASS=Password123$
       - ORDS_PASS=Password123$
     volumes:
       # Mapeo para las imágenes de APEX 20.1
@@ -61,3 +59,4 @@ services:
 networks:
   oracle_network:
     driver: bridge
+
